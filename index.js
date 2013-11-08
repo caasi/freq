@@ -32,7 +32,7 @@
         return 25;
       };
       d.push(~~(Math.random() * 26));
-      for (i$ = 1; i$ <= 6; ++i$) {
+      for (i$ = 1; i$ <= 3; ++i$) {
         d.push(next(d[d.length - 1]));
       }
       show = function(){

@@ -13,7 +13,7 @@ next = ->
     return parseInt k, 10 if r < v
   return 25
 d.push ~~(Math.random! * 26)
-for from 1 to 6
+for from 1 to 3
   d.push next d[d.length - 1]
 show = ->
   $d.text d.map(-> String.fromCharCode(65 + it).toLowerCase!).join ''
