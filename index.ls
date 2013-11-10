@@ -1,6 +1,7 @@
 <- $
 f <- $.ajax(url: \./freq.json data-type: \json).done
-$d = $ \#display
+$h = $ \#head
+$t = $ \#tail
 d = []
 prepare = ->
   r = []
@@ -16,9 +17,16 @@ d.push ~~(Math.random! * 26)
 for from 1 to 3
   d.push next d[d.length - 1]
 show = ->
-  $d.text d.map(-> String.fromCharCode(65 + it).toLowerCase!).join ''
+  chars = d.map -> String.fromCharCode(97 + it)
+  $h.text chars.shift!
+  $t.text chars.join ''
 show!
-$(document).keyup (e) ->
+$(document).keydown (e) ->
+  k = e.keyCode - 65
+  $h.css \color, if k is d.0 then \#fff else \#f00
+  console.log k is d.0
+.keyup (e) ->
+  $h.css \color, \#eee
   k = e.keyCode - 65
   if k is d.0
     d.shift!

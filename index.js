@@ -5,8 +5,9 @@
       url: './freq.json',
       dataType: 'json'
     }).done(function(f){
-      var $d, d, prepare, next, i$, show;
-      $d = $('#display');
+      var $h, $t, d, prepare, next, i$, show;
+      $h = $('#head');
+      $t = $('#tail');
       d = [];
       prepare = function(it){
         var r, s;
@@ -36,13 +37,22 @@
         d.push(next(d[d.length - 1]));
       }
       show = function(){
-        return $d.text(d.map(function(it){
-          return String.fromCharCode(65 + it).toLowerCase();
-        }).join(''));
+        var chars;
+        chars = d.map(function(it){
+          return String.fromCharCode(97 + it);
+        });
+        $h.text(chars.shift());
+        return $t.text(chars.join(''));
       };
       show();
-      return $(document).keyup(function(e){
+      return $(document).keydown(function(e){
         var k;
+        k = e.keyCode - 65;
+        $h.css('color', k === d[0] ? '#fff' : '#f00');
+        return console.log(k === d[0]);
+      }).keyup(function(e){
+        var k;
+        $h.css('color', '#eee');
         k = e.keyCode - 65;
         if (k === d[0]) {
           d.shift();
