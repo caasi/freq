@@ -5,10 +5,15 @@
       url: './freq.json',
       dataType: 'json'
     }).done(function(f){
-      var $h, $t, d, prepare, next, i$, show;
+      var $h, $t, d, miss, i$, i, prepare, next, show;
       $h = $('#head');
       $t = $('#tail');
       d = [];
+      miss = [];
+      for (i$ = 0; i$ < 26; ++i$) {
+        i = i$;
+        miss[i] = 0;
+      }
       prepare = function(it){
         var r, s;
         r = [];
@@ -38,7 +43,7 @@
       }
       show = function(){
         var chars;
-        chars = d.map(function(it){
+        chars = d.slice(0, 4).map(function(it){
           return String.fromCharCode(97 + it);
         });
         $h.text(chars.shift());
@@ -46,17 +51,27 @@
       };
       show();
       return $(document).keydown(function(e){
-        var k;
+        var k, color;
         k = e.keyCode - 65;
-        $h.css('color', k === d[0] ? '#fff' : '#f00');
-        return console.log(k === d[0]);
+        color = '#fff';
+        if (k !== d[0]) {
+          color = '#f00';
+          miss[d[0]]++;
+        }
+        return $h.css('color', color);
       }).keyup(function(e){
-        var k;
+        var k, c, i$, to$;
         $h.css('color', '#eee');
         k = e.keyCode - 65;
         if (k === d[0]) {
           d.shift();
-          d.push(next(d[d.length - 1]));
+          if (d.length < 4) {
+            c = next(d[d.length - 1]);
+            for (i$ = 0, to$ = miss[c]; i$ <= to$; ++i$) {
+              d.push(c);
+            }
+            miss[c] = 0;
+          }
           return show();
         }
       });
